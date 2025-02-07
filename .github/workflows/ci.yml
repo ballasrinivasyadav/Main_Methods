@@ -23,11 +23,34 @@ jobs:
 
       - name: Run tests and generate CSV report
         run: |
-          PYTHONPATH=. pytest tests/
-          cat test_results.csv  # Show results in logs
+          PYTHONPATH=src pytest tests/
+          cat test_results.csv  # Display CSV output
 
       - name: Upload CSV test results
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-csv
+          name: test-results
           path: test_results.csv
+
+  email_notification:
+    needs: test  # Wait for test job to finish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download CSV test results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: .
+
+      - name: Send email with test results
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "CI Test Results - ${{ github.repository }}"
+          body: "Hello,\n\nAttached are the test results for the latest CI run.\n\nThanks!"
+          to: "ballasrinivasyadav72@gmail.com"
+          from: "GitHub Actions <ballasrinivasyadav72@gmail.com>"
+          attachments: test_results.csv
