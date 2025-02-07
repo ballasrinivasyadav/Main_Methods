@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated to latest version
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4  # Updated to latest version
         with:
           python-version: '3.9'
 
@@ -26,7 +26,7 @@ jobs:
           PYTHONPATH=. pytest tests/ --junitxml=report.xml
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to latest version
         with:
           name: test-report
           path: report.xml
