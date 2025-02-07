@@ -11,22 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to latest version
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4  # Updated to latest version
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
       - name: Install dependencies
         run: pip install -r requirements.txt || echo "No dependencies to install"
 
-      - name: Run tests with report
+      - name: Run tests and generate CSV report
         run: |
-          PYTHONPATH=. pytest tests/ --junitxml=report.xml
+          PYTHONPATH=. pytest tests/
+          cat test_results.csv  # Show results in logs
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v4  # Updated to latest version
+      - name: Upload CSV test results
+        uses: actions/upload-artifact@v4
         with:
-          name: test-report
-          path: report.xml
+          name: test-results-csv
+          path: test_results.csv
