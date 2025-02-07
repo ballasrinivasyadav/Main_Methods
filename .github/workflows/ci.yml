@@ -21,8 +21,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt || echo "No dependencies to install"
 
-      #- name: Run tests
-        #run: pytest tests/
-      - name: Run tests
-        run: PYTHONPATH=. pytest tests/
+      - name: Run tests with report
+        run: |
+          PYTHONPATH=. pytest tests/ --junitxml=report.xml
 
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: report.xml
