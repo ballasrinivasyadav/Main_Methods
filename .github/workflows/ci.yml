@@ -21,5 +21,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt || echo "No dependencies to install"
 
+      #- name: Run tests
+        #run: pytest tests/
       - name: Run tests
-        run: pytest tests/
+        run: PYTHONPATH=. pytest tests/
+
