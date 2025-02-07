@@ -1,6 +1,12 @@
-import pytest
-from src.main import add, subtract
-from src.utils import write_test_result  # Import CSV logging utility
+import sys
+import os
+
+# Add src directory to system path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
+from main import add, subtract
+from utils import write_test_result  # Ensure correct import
+
 
 def test_add_pass():
     """Test for addition function - should pass"""
